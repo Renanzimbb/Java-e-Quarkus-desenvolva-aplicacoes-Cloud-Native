@@ -1,11 +1,29 @@
 package br.com.alura.domain;
- 
+
+import io.quarkus.Generated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class Agencia {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
+    @Column(name = "razao_social")
     private String razaoSocial;
     private String cnpj;
+
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     public Integer getId() {
