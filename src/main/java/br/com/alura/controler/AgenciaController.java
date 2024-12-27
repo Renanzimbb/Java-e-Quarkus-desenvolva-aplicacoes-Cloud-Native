@@ -3,7 +3,8 @@ package br.com.alura.controler;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import br.com.alura.domain.Agencia;
-import br.com.alura.service.http.AgenciaService;
+import br.com.alura.service.AgenciaService;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -22,6 +23,7 @@ public class AgenciaController {
     }
     
     @POST
+    @Transactional
     public RestResponse<Void> cadastrar(Agencia agencia, @Context UriInfo uriInfo){
         this.agenciaService.cadastrar(agencia);
         return RestResponse.created(uriInfo.getAbsolutePathBuilder().build());
@@ -35,6 +37,7 @@ public class AgenciaController {
     }
 
     @DELETE
+    @Transactional
     @Path("{id}")
     public RestResponse<Void> deletar(Long id){
         this.agenciaService.deletar(id);
@@ -42,6 +45,7 @@ public class AgenciaController {
     }
 
     @PUT
+    @Transactional
     public RestResponse<Void> alterar(Agencia agencia){
         this.agenciaService.alterar(agencia);
         return RestResponse.ok();

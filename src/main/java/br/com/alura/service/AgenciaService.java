@@ -1,4 +1,4 @@
-package br.com.alura.service.http;
+package br.com.alura.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import br.com.alura.domain.http.AgenciaHttp;
 import br.com.alura.domain.http.SituacaoCadastral;
 import br.com.alura.exceptions.AgenciaNaoAtivaOuNaoEcontradaException;
 import br.com.alura.repository.AgenciaRepository;
+import br.com.alura.service.http.SituacaoCadastralHttpService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 // Para isso, utilizamos a anotação @ApplicationScoped, que informa ao Quarkus que a classe deve ser gerenciada e injetada em outros recursos, 
@@ -43,7 +44,7 @@ public class AgenciaService {
     }
 
     public void deletar(Long id){
-        agenciaRepository.deleteById(id)
+        agenciaRepository.deleteById(id);
     }
 
     public void alterar(Agencia agencia){

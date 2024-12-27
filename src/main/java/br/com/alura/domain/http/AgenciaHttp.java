@@ -6,6 +6,13 @@ public class AgenciaHttp {
     SituacaoCadastral situacao;
     String cnpj;
 
+    public AgenciaHttp(String nome, String razaoSocial, String cnpj, String situacaoCadastral) {
+        this.nome = nome;
+        this.razaoSocial = razaoSocial;
+        this.cnpj = cnpj;
+        this.situacao = SituacaoCadastral.valueOf(situacaoCadastral);
+    }
+
     public String getNome() {
         return nome;
     }
