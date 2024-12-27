@@ -1,6 +1,7 @@
 package br.com.alura.domain;
 
 import io.quarkus.Generated;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Agencia {
     private String razaoSocial;
     private String cnpj;
 
-    @OneToOne
+    @OneToOne(cascade =  CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 

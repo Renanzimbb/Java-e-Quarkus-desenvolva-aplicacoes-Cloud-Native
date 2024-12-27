@@ -9,6 +9,7 @@ import br.com.alura.domain.Agencia;
 import br.com.alura.domain.http.AgenciaHttp;
 import br.com.alura.domain.http.SituacaoCadastral;
 import br.com.alura.exceptions.AgenciaNaoAtivaOuNaoEcontradaException;
+import br.com.alura.repository.AgenciaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 // Para isso, utilizamos a anotação @ApplicationScoped, que informa ao Quarkus que a classe deve ser gerenciada e injetada em outros recursos, 
@@ -20,34 +21,33 @@ public class AgenciaService {
     @RestClient
     private SituacaoCadastralHttpService SituacaoCadastralHttpService;
 
-    private List<Agencia> agencias = new ArrayList<>();
+    private final AgenciaRepository agenciaRepository;
+
+    AgenciaService(AgenciaRepository agenciaRepository) {
+        this.agenciaRepository = agenciaRepository;
+    }
 
     public void cadastrar(Agencia agencia){
         AgenciaHttp agenciaHttp = SituacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
 
         if(agenciaHttp != null && agenciaHttp.getSituacao().equals(SituacaoCadastral.ATIVO)){
-            agencias.add(agencia);
+            agenciaRepository.persist(agencia);
         } else{
             throw new AgenciaNaoAtivaOuNaoEcontradaException();
         }
        
     }
 
-    public Agencia buscarPorId(Integer id){
-        return agencias.stream()
-                        .filter(agencia -> agencia.getId()
-                        .equals(id))
-                        .toList()
-                        .getFirst();
+    public Agencia buscarPorId(Long id){
+        return agenciaRepository.findById(id);
     }
 
-    public void deletar(Integer id){
-        agencias.removeIf((agencia -> agencia.getId().equals(id)));
+    public void deletar(Long id){
+        agenciaRepository.deleteById(id)
     }
 
     public void alterar(Agencia agencia){
-        deletar(agencia.getId());
-        cadastrar(agencia);
+        agenciaRepository.update("nome = ?1, razaoSocial = ?2, cnpj = ?3 where id = ?4", agencia.getNome(), agencia.getRazaoSocial(), agencia.getCnpj(), agencia.getId());
     }
     
 }
